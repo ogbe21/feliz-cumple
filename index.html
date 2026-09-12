@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>¡Feliz Cumpleaños Pedro! 🎉 27</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<!-- Manchas de color animadas -->
+  <div class="bg-blob" id="blob1"></div>
+  <div class="bg-blob" id="blob2"></div>
+  <div class="bg-blob" id="blob3"></div>
+
+  <!-- ═══════════ CARGANDO ═══════════ -->
+  <div id="loader">
+    <div class="loader-ring">
+      <span class="loader-cake">🎂</span>
+    </div>
+    <p class="loader-text">Preparando la fiesta<span class="dots">...</span></p>
+  </div>
+
+  <!-- ═══════════ CONFETI / FUEGOS ARTIFICIALES ═══════════ -->
+  <div id="confetti-layer" aria-hidden="true"></div>
+  <canvas id="fireworks-canvas" aria-hidden="true"></canvas>
+
+  <!-- ═══════════ GLOBOS ═══════════ -->
+  <div id="balloons" aria-hidden="true">
+    <span class="balloon" style="--c:#ff4d6d;--d:0s;--x:6%;"></span>
+    <span class="balloon" style="--c:#ff9f1c;--d:.6s;--x:16%;"></span>
+    <span class="balloon" style="--c:#ffd23e;--d:1.2s;--x:27%;"></span>
+    <span class="balloon" style="--c:#7cff5e;--d:.3s;--x:38%;"></span>
+    <span class="balloon" style="--c:#3ec7ff;--d:.9s;--x:49%;"></span>
+    <span class="balloon" style="--c:#b478ff;--d:1.5s;--x:60%;"></span>
+    <span class="balloon" style="--c:#ff4d6d;--d:.2s;--x:71%;"></span>
+    <span class="balloon" style="--c:#ffd23e;--d:.8s;--x:82%;"></span>
+    <span class="balloon" style="--c:#7cff5e;--d:1.4s;--x:93%;"></span>
+  </div>
+<!-- ═══════════ SECCIÓN 1 · HERO ═══════════ -->
+  <main id="main">
+    <section id="hero" class="screen">
+      <div class="hero-badge reveal-up">
+        <span class="badge-emoji">🎉</span>
+        <span>Hoy es un día muy especial</span>
+      </div>
+
+      <h1 class="hero-title reveal-letter">
+        <span class="word">¡Feliz</span>
+        <span class="word grad">Cumpleaños</span>
+        <span class="word">Pedro!</span>
+      </h1>
+
+      <div class="age-wrap reveal-up">
+        <div class="age-card tilt-card">
+          <span class="age-label pulse-glow">Años de leyenda</span>
+          <span class="age-number neon-age">27</span>
+          <span class="age-secondary">🎂🎈🎁</span>
+        </div>
+      </div>
+
+      <div class="date-chip reveal-up">
+        <span class="date-emoji">📅</span>
+        <strong>13 de Septiembre</strong>
+        <span class="date-sub">— La fecha está marcada en rojo —</span>
+      </div>
+
+      <button id="entrarBtn" class="enter-btn reveal-up">
+        <span class="btn-label">🎊 ¡Comenzar la fiesta!</span>
+        <span class="btn-shine"></span>
+      </button>
+
+      <div class="scroll-hint reveal-up">
+        <span>Desliza</span>
+        <span class="scroll-arrow">↓</span>
+      </div>
+    </section>
+<!-- ═══════════ SECCIÓN 2 · TORTA ═══════════ -->
+    <section id="cake" class="screen">
+      <header class="section-head">
+        <h2 class="section-title reveal-up">Que sople las velas </h2>
+        <p class="section-sub reveal-up">Pide un deseo… pero que el regalo no falte 😉</p>
+      </header>
+
+      <div class="cake-stage">
+        <div class="candle" style="--d:.2s;--flame:#ffb703;">
+          <span class="flame"></span><span class="candle-body"></span>
+        </div>
+        <div class="candle" style="--d:.5s;--flame:#ff5e3a;">
+          <span class="flame"></span><span class="candle-body"></span>
+        </div>
+        <div class="candle" style="--d:.8s;--flame:#ff2d95;">
+          <span class="flame"></span><span class="candle-body"></span>
+        </div>
+
+        <div class="cake-body">
+          <span class="sprinkle"></span><span class="sprinkle"></span><span class="sprinkle"></span>
+          <span class="sprinkle"></span><span class="sprinkle"></span><span class="sprinkle"></span>
+          <span class="sprinkle"></span><span class="sprinkle"></span><span class="sprinkle"></span>
+          <span class="sprinkle"></span><span class="sprinkle"></span><span class="sprinkle"></span>
+          <span class="cake-tag">27</span>
+          <div class="drip d1"></div><div class="drip d2"></div><div class="drip d3"></div>
+          <div class="drip d4"></div><div class="drip d5"></div><div class="drip d6"></div>
+        </div>
+
+        <div class="cake-plate"></div>
+        <div class="cake-shadow"></div>
+      </div>
+
+      <div class="floating-emojis" aria-hidden="true">
+        <span>🎈</span><span>🎁</span><span>⭐</span><span>🎉</span>
+        <span>💫</span><span>🍰</span><span>🥳</span><span>🕶️</span>
+      </div>
+    </section>
+<!-- ═══════════ SECCIÓN 3 · MENSAJE ═══════════ -->
+    <section id="message" class="screen">
+      <header class="section-head">
+        <h2 class="section-title reveal-up">Un mensaje para vos 💌</h2>
+        <p class="section-sub reveal-up">27 veces alrededor del sol, y la mejor versión recién empieza.</p>
+      </header>
+
+      <div class="msg-card glass-card reveal-up">
+        <span class="card-quote">“</span>
+        <p class="msg-text">
+          Feliz cumpleaños, <strong>Pedro</strong>. Hoy no solo celebramos un año más,
+          celebramos a la persona increíble que sos. Que el <em>13 de septiembre</em>
+          esté cargado de abrazos, risas, torta y de todo lo que te haga feliz.
+          <span class="msg-emoji">🎂🥳🎈</span>
+        </p>
+        <p class="msg-sign">— Tu gente te quiere un montón —</p>
+      </div>
+
+      <div class="wish-grid">
+        <div class="wish-tile reveal-up" style="--i:0"><span class="w-ico">🎂</span><h3>Salud</h3><p>Para seguir soñando a lo grande.</p></div>
+        <div class="wish-tile reveal-up" style="--i:1"><span class="w-ico">🚀</span><h3>Éxito</h3><p>Que 27 sea tu año récord.</p></div>
+        <div class="wish-tile reveal-up" style="--i:2"><span class="w-ico">💖</span><h3>Amor</h3><p>Rodeado de los tuyos siempre.</p></div>
+        <div class="wish-tile reveal-up" style="--i:3"><span class="w-ico">✨</span><h3>Magia</h3><p>Que no falte la chispa jamás.</p></div>
+      </div>
+
+      <button id="fiestaBtn" class="party-btn reveal-up">
+        <span class="btn-label">🎆 ¡Quiero más fiesta!</span>
+      </button>
+
+      <div id="timer-chip" class="reveal-up">
+        <span>🔥 Quedan velas para soplar…</span>
+        <button id="soplarBtn" class="blow-btn">💨 ¡Soplar!</button>
+      </div>
+    </section>
+<!-- ═══════════ SECCIÓN 4 · CIERRE ═══════════ -->
+    <section id="finale" class="screen">
+      <h2 class="finale-title reveal-letter-2">
+        <span class="fw">¡Pedro,</span>
+        <span class="fw grad2">que tengas</span>
+        <span class="fw">un día</span>
+        <span class="fw grad2">inolvidable!</span>
+      </h2>
+
+      <div class="confetti-burst" aria-hidden="true">
+        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+      </div>
+
+      <div class="big-27">27</div>
+
+      <a href="#hero" class="back-top reveal-up">
+        <span class="rocket">🚀</span>
+        <span>Volver a empezar</span>
+      </a>
+
+      <footer class="site-footer reveal-up">
+        <p>Este es un cumpleaños épico · 13·09</p>
+      </footer>
+    </section>
+  </main>
+
+  <!-- Marquesina decorativa de fondo -->
+  <div class="marquee-strip" aria-hidden="true">
+    <div class="marquee-track">
+      <span>FELIZ CUMPLEAÑOS PEDRO 🎂 · 13 DE SEPTIEMBRE 🎉 · 27 AÑOS 🎈 · FELIZ CUMPLEAÑOS PEDRO 🎂 · 13 DE SEPTIEMBRE 🎉 · 27 AÑOS 🎈 · FELIZ CUMPLEAÑOS PEDRO 🎂 · 13 DE SEPTIEMBRE 🎉 · 27 AÑOS 🎈 ·</span>
+      <span>FELIZ CUMPLEAÑOS PEDRO 🎂 · 13 DE SEPTIEMBRE 🎉 · 27 AÑOS 🎈 · FELIZ CUMPLEAÑOS PEDRO 🎂 · 13 DE SEPTIEMBRE 🎉 · 27 AÑOS 🎈 · FELIZ CUMPLEAÑOS PEDRO 🎂 · 13 DE SEPTIEMBRE 🎉 · 27 AÑOS 🎈 ·</span>
+    </div>
+  </div>
+<script>
+    // ───── Partículas de polvo de hadas al hacer clic ─────
+    const body = document.body;
+    function spawnSparkle(x, y) {
+      const s = document.createElement('span');
+      s.className = 'sparkle';
+      s.style.left = x + 'px';
+      s.style.top = y + 'px';
+      s.style.setProperty('--dx', (Math.random() * 80 - 40) + 'px');
+      s.style.setProperty('--dy', (Math.random() * 60 - 90) + 'px');
+      body.appendChild(s);
+      setTimeout(() => s.remove(), 1300);
+    }
+    body.addEventListener('click', (e) => { for (let i = 0; i < 5; i++) spawnSparkle(e.clientX, e.clientY); });
+
+    // ───── Confeti (piezas animadas con CSS) ─────
+    const confettiLayer = document.getElementById('confetti-layer');
+    const COLORS = ['#ff4d6d','#ff9f1c','#ffd23e','#7cff5e','#3ec7ff','#b478ff','#ffffff'];
+    function dropConfetti(n = 60) {
+      for (let i = 0; i < n; i++) {
+        const c = document.createElement('i');
+        c.className = 'confetti-piece';
+        c.style.left = Math.random() * 100 + '%';
+        c.style.background = COLORS[Math.floor(Math.random() * COLORS.length)];
+        c.style.animationDelay = (Math.random() * 5) + 's';
+        c.style.animationDuration = (3.5 + Math.random() * 4) + 's';
+        c.style.setProperty('--rot', (Math.random() * 720 - 360) + 'deg');
+        c.style.setProperty('--sway', (Math.random() * 180 - 90) + 'deg');
+        confettiLayer.appendChild(c);
+      }
+    }
+    dropConfetti(70);
+
+    // ───── Interactivo: soplar velas ─────
+    const soplarBtn = document.getElementById('soplarBtn');
+    const tiChip = document.getElementById('timer-chip');
+    let flames = 3;
+    soplarBtn.addEventListener('click', () => {
+      if (flames <= 0) {
+        tiChip.querySelector('span').textContent = '🎉 ¡Velas apagadas, feliz cumple!';
+        soplarBtn.style.display = 'none';
+        dropConfetti(60);
+        return;
+      }
+      flames--;
+      tiChip.querySelector('span').textContent = '🔥 Quedan ' + flames + ' vel' + (flames === 1 ? 'a' : 'as') + '…';
+      const candles = document.querySelectorAll('.cake-stage .candle');
+      const idx = 3 - flames;
+      if (idx < candles.length) {
+        candles[idx].classList.add('flame-off');
+        setTimeout(() => { candles[idx].style.display = 'none'; }, 900);
+      }
+    });
+
+    // ───── Al cargar: quitar loader y arrancar la fiesta ─────
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        document.getElementById('loader').classList.add('loader-done');
+        setTimeout(() => {
+          document.getElementById('loader').style.display = 'none';
+          dropConfetti(45);
+          setTimeout(startFireworks, 600);
+        }, 900);
+      }, 1800);
+    });
+
+    // ───── Botones con salida animada ─────
+    document.getElementById('entrarBtn').addEventListener('click', () => {
+      document.getElementById('hero').classList.add('screen-exit');
+      setTimeout(() => { scrollTo('#cake'); }, 950);
+      setTimeout(() => { document.getElementById('hero').classList.remove('screen-exit'); }, 1900);
+    });
+    document.getElementById('fiestaBtn').addEventListener('click', () => {
+      dropConfetti(80);
+      setTimeout(startFireworks, 100);
+      setTimeout(() => { scrollTo('#finale'); }, 800);
+    });
+
+    function scrollTo(sel) {
+      const t = document.querySelector(sel);
+      if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  </script>
+<script>
+    // ───── Fuegos artificiales con canvas ─────
+    let fw = [];
+    const canvas = document.getElementById('fireworks-canvas');
+    const ctx = canvas.getContext('2d');
+    function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    function startFireworks() {
+      if (fw.length === 0) {
+        setInterval(() => {
+          if (Math.random() < 0.75) fw.push(new Rocket());
+        }, 380);
+        requestAnimationFrame(tickFireworks);
+      }
+    }
+    class Rocket {
+      constructor() {
+        this.x = canvas.width * 0.2 + Math.random() * canvas.width * 0.6;
+        this.y = canvas.height;
+        this.vy = canvas.height * (0.035 + Math.random() * 0.02);
+        this.hue = Math.floor(Math.random() * 360);
+        this.particles = [];
+      }
+      update() {
+        this.y -= this.vy;
+        if (this.y < canvas.height * 0.3 + Math.random() * canvas.height * 0.25) {
+          const count = 55 + Math.floor(Math.random() * 40);
+          for (let i = 0; i < count; i++) {
+            const a = Math.random() * Math.PI * 2;
+            const sp = 1.2 + Math.random() * 2.4;
+            this.particles.push({ x: this.x, y: this.y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, life: 1, hue: this.hue + Math.random() * 40 });
+          }
+          return false;
+        }
+        return true;
+      }
+      draw() {
+        ctx.save();
+        ctx.fillStyle = '#fff';
+        ctx.shadowBlur = 14; ctx.shadowColor = 'hsl(' + this.hue + ',100%,70%)';
+        ctx.beginPath(); ctx.arc(this.x, this.y, 2.4, 0, Math.PI * 2); ctx.fill();
+        ctx.restore();
+      }
+    }
+    function tickFireworks() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let r = 0; r < fw.length; r++) {
+        const rocket = fw[r];
+        if (rocket.particles.length === 0) {
+          if (rocket.update()) rocket.draw();
+          else fw.splice(r, 1);
+        } else {
+          for (let i = 0; i < rocket.particles.length; i++) {
+            const p = rocket.particles[i];
+            p.x += p.vx; p.y += p.vy; p.vy += 0.045; p.vx *= 0.985; p.vy *= 0.985; p.life -= 0.012;
+            ctx.save();
+            ctx.globalAlpha = Math.max(0, p.life);
+            ctx.fillStyle = 'hsl(' + p.hue + ',100%,65%)';
+            ctx.shadowBlur = 10; ctx.shadowColor = 'hsl(' + p.hue + ',100%,70%)';
+            ctx.beginPath(); ctx.arc(p.x, p.y, 1.1 + Math.random() * 0.8, 0, Math.PI * 2); ctx.fill();
+            ctx.restore();
+          }
+          rocket.particles = rocket.particles.filter(p => p.life > 0);
+          if (rocket.particles.length === 0) fw.splice(r, 1);
+        }
+      }
+      requestAnimationFrame(tickFireworks);
+    }
+
+    // ───── Reveal con IntersectionObserver ─────
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('in-view'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal-up').forEach(el => io.observe(el));
+  </script>
+</body>
+</html>
