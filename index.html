@@ -10,12 +10,10 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<!-- Manchas de color animadas -->
   <div class="bg-blob" id="blob1"></div>
   <div class="bg-blob" id="blob2"></div>
   <div class="bg-blob" id="blob3"></div>
 
-  <!-- ═══════════ CARGANDO ═══════════ -->
   <div id="loader">
     <div class="loader-ring">
       <span class="loader-cake">🎂</span>
@@ -23,11 +21,9 @@
     <p class="loader-text">Preparando la fiesta<span class="dots">...</span></p>
   </div>
 
-  <!-- ═══════════ CONFETI / FUEGOS ARTIFICIALES ═══════════ -->
   <div id="confetti-layer" aria-hidden="true"></div>
   <canvas id="fireworks-canvas" aria-hidden="true"></canvas>
 
-  <!-- ═══════════ GLOBOS ═══════════ -->
   <div id="balloons" aria-hidden="true">
     <span class="balloon" style="--c:#ff4d6d;--d:0s;--x:6%;"></span>
     <span class="balloon" style="--c:#ff9f1c;--d:.6s;--x:16%;"></span>
@@ -39,7 +35,7 @@
     <span class="balloon" style="--c:#ffd23e;--d:.8s;--x:82%;"></span>
     <span class="balloon" style="--c:#7cff5e;--d:1.4s;--x:93%;"></span>
   </div>
-<!-- ═══════════ SECCIÓN 1 · HERO ═══════════ -->
+
   <main id="main">
     <section id="hero" class="screen">
       <div class="hero-badge reveal-up">
@@ -77,10 +73,10 @@
         <span class="scroll-arrow">↓</span>
       </div>
     </section>
-<!-- ═══════════ SECCIÓN 2 · TORTA ═══════════ -->
+
     <section id="cake" class="screen">
       <header class="section-head">
-        <h2 class="section-title reveal-up">Que sople las velas </h2>
+        <h2 class="section-title reveal-up">Que sople las velas</h2>
         <p class="section-sub reveal-up">Pide un deseo… pero que el regalo no falte 😉</p>
       </header>
 
@@ -114,7 +110,7 @@
         <span>💫</span><span>🍰</span><span>🥳</span><span>🕶️</span>
       </div>
     </section>
-<!-- ═══════════ SECCIÓN 3 · MENSAJE ═══════════ -->
+
     <section id="message" class="screen">
       <header class="section-head">
         <h2 class="section-title reveal-up">Un mensaje para vos 💌</h2>
@@ -148,7 +144,7 @@
         <button id="soplarBtn" class="blow-btn">💨 ¡Soplar!</button>
       </div>
     </section>
-<!-- ═══════════ SECCIÓN 4 · CIERRE ═══════════ -->
+
     <section id="finale" class="screen">
       <h2 class="finale-title reveal-letter-2">
         <span class="fw">¡Pedro,</span>
@@ -175,16 +171,22 @@
     </section>
   </main>
 
-  <!-- Marquesina decorativa de fondo -->
   <div class="marquee-strip" aria-hidden="true">
     <div class="marquee-track">
       <span>FELIZ CUMPLEAÑOS PEDRO 🎂 · 13 DE SEPTIEMBRE 🎉 · 27 AÑOS 🎈 · FELIZ CUMPLEAÑOS PEDRO 🎂 · 13 DE SEPTIEMBRE 🎉 · 27 AÑOS 🎈 · FELIZ CUMPLEAÑOS PEDRO 🎂 · 13 DE SEPTIEMBRE 🎉 · 27 AÑOS 🎈 ·</span>
       <span>FELIZ CUMPLEAÑOS PEDRO 🎂 · 13 DE SEPTIEMBRE 🎉 · 27 AÑOS 🎈 · FELIZ CUMPLEAÑOS PEDRO 🎂 · 13 DE SEPTIEMBRE 🎉 · 27 AÑOS 🎈 · FELIZ CUMPLEAÑOS PEDRO 🎂 · 13 DE SEPTIEMBRE 🎉 · 27 AÑOS 🎈 ·</span>
     </div>
   </div>
-<script>
-    // ───── Partículas de polvo de hadas al hacer clic ─────
+
+  <script>
+  (() => {
+    'use strict';
+
     const body = document.body;
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // ───── Sparkles (throttled) ─────
+    let lastSpark = 0;
     function spawnSparkle(x, y) {
       const s = document.createElement('span');
       s.className = 'sparkle';
@@ -195,27 +197,41 @@
       body.appendChild(s);
       setTimeout(() => s.remove(), 1300);
     }
-    body.addEventListener('click', (e) => { for (let i = 0; i < 5; i++) spawnSparkle(e.clientX, e.clientY); });
+    if (!reduced) {
+      body.addEventListener('click', (e) => {
+        const now = performance.now();
+        if (now - lastSpark < 80) return;
+        lastSpark = now;
+        for (let i = 0; i < 3; i++) spawnSparkle(e.clientX, e.clientY);
+      }, { passive: true });
+    }
 
-    // ───── Confeti (piezas animadas con CSS) ─────
+    // ───── Confeti con pool limitado ─────
     const confettiLayer = document.getElementById('confetti-layer');
-    const COLORS = ['#ff4d6d','#ff9f1c','#ffd23e','#7cff5e','#3ec7ff','#b478ff','#ffffff'];
-    function dropConfetti(n = 60) {
-      for (let i = 0; i < n; i++) {
+    const COLORS = ['#ff4d6d', '#ff9f1c', '#ffd23e', '#7cff5e', '#3ec7ff', '#b478ff', '#ffffff'];
+    const MAX_CONFETTI = 80;
+    let confettiCount = 0;
+
+    function dropConfetti(n = 40) {
+      if (reduced) return;
+      const allowed = Math.min(n, MAX_CONFETTI - confettiCount);
+      for (let i = 0; i < allowed; i++) {
         const c = document.createElement('i');
         c.className = 'confetti-piece';
         c.style.left = Math.random() * 100 + '%';
-        c.style.background = COLORS[Math.floor(Math.random() * COLORS.length)];
-        c.style.animationDelay = (Math.random() * 5) + 's';
-        c.style.animationDuration = (3.5 + Math.random() * 4) + 's';
-        c.style.setProperty('--rot', (Math.random() * 720 - 360) + 'deg');
-        c.style.setProperty('--sway', (Math.random() * 180 - 90) + 'deg');
+        c.style.background = COLORS[(Math.random() * COLORS.length) | 0];
+        c.style.animationDelay = (Math.random() * 4) + 's';
+        c.style.animationDuration = (3.5 + Math.random() * 3) + 's';
+        c.style.setProperty('--rot', ((Math.random() * 720 - 360) | 0) + 'deg');
         confettiLayer.appendChild(c);
+        confettiCount++;
+        // Reciclar: eliminar tras terminar el ciclo
+        setTimeout(() => { c.remove(); confettiCount--; }, 9000);
       }
     }
-    dropConfetti(70);
+    dropConfetti(45);
 
-    // ───── Interactivo: soplar velas ─────
+    // ───── Soplar velas ─────
     const soplarBtn = document.getElementById('soplarBtn');
     const tiChip = document.getElementById('timer-chip');
     let flames = 3;
@@ -223,7 +239,7 @@
       if (flames <= 0) {
         tiChip.querySelector('span').textContent = '🎉 ¡Velas apagadas, feliz cumple!';
         soplarBtn.style.display = 'none';
-        dropConfetti(60);
+        dropConfetti(50);
         return;
       }
       flames--;
@@ -236,113 +252,164 @@
       }
     });
 
-    // ───── Al cargar: quitar loader y arrancar la fiesta ─────
+    // ───── Loader ─────
     window.addEventListener('load', () => {
       setTimeout(() => {
-        document.getElementById('loader').classList.add('loader-done');
+        const loader = document.getElementById('loader');
+        loader.classList.add('loader-done');
         setTimeout(() => {
-          document.getElementById('loader').style.display = 'none';
-          dropConfetti(45);
-          setTimeout(startFireworks, 600);
-        }, 900);
-      }, 1800);
-    });
+          loader.style.display = 'none';
+          dropConfetti(35);
+          setTimeout(startFireworks, 500);
+        }, 700);
+      }, 1500);
+    }, { once: true });
 
-    // ───── Botones con salida animada ─────
-    document.getElementById('entrarBtn').addEventListener('click', () => {
-      document.getElementById('hero').classList.add('screen-exit');
-      setTimeout(() => { scrollTo('#cake'); }, 950);
-      setTimeout(() => { document.getElementById('hero').classList.remove('screen-exit'); }, 1900);
-    });
-    document.getElementById('fiestaBtn').addEventListener('click', () => {
-      dropConfetti(80);
-      setTimeout(startFireworks, 100);
-      setTimeout(() => { scrollTo('#finale'); }, 800);
-    });
+    // ───── Navegación ─────
+    const entrarBtn = document.getElementById('entrarBtn');
+    const fiestaBtn = document.getElementById('fiestaBtn');
+    const hero = document.getElementById('hero');
 
     function scrollTo(sel) {
       const t = document.querySelector(sel);
       if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
-  </script>
-<script>
-    // ───── Fuegos artificiales con canvas ─────
-    let fw = [];
+
+    entrarBtn.addEventListener('click', () => {
+      hero.classList.add('screen-exit');
+      setTimeout(() => scrollTo('#cake'), 900);
+      setTimeout(() => hero.classList.remove('screen-exit'), 1800);
+    });
+    fiestaBtn.addEventListener('click', () => {
+      dropConfetti(60);
+      setTimeout(startFireworks, 80);
+      setTimeout(() => scrollTo('#finale'), 700);
+    });
+
+    // ───── Fuegos artificiales (optimizado) ─────
     const canvas = document.getElementById('fireworks-canvas');
-    const ctx = canvas.getContext('2d');
-    function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-    window.addEventListener('resize', resizeCanvas);
+    const ctx = canvas.getContext('2d', { alpha: true });
+    const rockets = [];
+    let fwInterval = null;
+    let fwRAF = null;
+    let pageVisible = !document.hidden;
+    const DPR = Math.min(window.devicePixelRatio || 1, 2);
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth * DPR;
+      canvas.height = window.innerHeight * DPR;
+      canvas.style.width = window.innerWidth + 'px';
+      canvas.style.height = window.innerHeight + 'px';
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    }
+    window.addEventListener('resize', resizeCanvas, { passive: true });
     resizeCanvas();
 
-    function startFireworks() {
-      if (fw.length === 0) {
-        setInterval(() => {
-          if (Math.random() < 0.75) fw.push(new Rocket());
-        }, 380);
-        requestAnimationFrame(tickFireworks);
-      }
-    }
     class Rocket {
-      constructor() {
-        this.x = canvas.width * 0.2 + Math.random() * canvas.width * 0.6;
-        this.y = canvas.height;
-        this.vy = canvas.height * (0.035 + Math.random() * 0.02);
-        this.hue = Math.floor(Math.random() * 360);
+      constructor(w, h) {
+        this.x = w * 0.2 + Math.random() * w * 0.6;
+        this.y = h;
+        this.vy = h * (0.035 + Math.random() * 0.02);
+        this.hue = (Math.random() * 360) | 0;
         this.particles = [];
+        this.targetY = h * 0.3 + Math.random() * h * 0.25;
       }
       update() {
         this.y -= this.vy;
-        if (this.y < canvas.height * 0.3 + Math.random() * canvas.height * 0.25) {
-          const count = 55 + Math.floor(Math.random() * 40);
+        if (this.y < this.targetY) {
+          const count = 40 + ((Math.random() * 30) | 0);
           for (let i = 0; i < count; i++) {
             const a = Math.random() * Math.PI * 2;
-            const sp = 1.2 + Math.random() * 2.4;
-            this.particles.push({ x: this.x, y: this.y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, life: 1, hue: this.hue + Math.random() * 40 });
+            const sp = 1.2 + Math.random() * 2.2;
+            this.particles.push({
+              x: this.x, y: this.y,
+              vx: Math.cos(a) * sp, vy: Math.sin(a) * sp,
+              life: 1, hue: this.hue + Math.random() * 40
+            });
           }
           return false;
         }
         return true;
       }
-      draw() {
-        ctx.save();
-        ctx.fillStyle = '#fff';
-        ctx.shadowBlur = 14; ctx.shadowColor = 'hsl(' + this.hue + ',100%,70%)';
-        ctx.beginPath(); ctx.arc(this.x, this.y, 2.4, 0, Math.PI * 2); ctx.fill();
-        ctx.restore();
-      }
     }
+
     function tickFireworks() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      for (let r = 0; r < fw.length; r++) {
-        const rocket = fw[r];
+      fwRAF = null;
+      if (!pageVisible) return;
+      const w = window.innerWidth, h = window.innerHeight;
+      ctx.clearRect(0, 0, w, h);
+
+      for (let r = rockets.length - 1; r >= 0; r--) {
+        const rocket = rockets[r];
         if (rocket.particles.length === 0) {
-          if (rocket.update()) rocket.draw();
-          else fw.splice(r, 1);
+          if (rocket.update()) {
+            ctx.fillStyle = '#fff';
+            ctx.shadowBlur = 8;
+            ctx.shadowColor = 'hsl(' + rocket.hue + ',100%,70%)';
+            ctx.beginPath();
+            ctx.arc(rocket.x, rocket.y, 2.2, 0, Math.PI * 2);
+            ctx.fill();
+          } else {
+            rockets.splice(r, 1);
+          }
         } else {
           for (let i = 0; i < rocket.particles.length; i++) {
             const p = rocket.particles[i];
-            p.x += p.vx; p.y += p.vy; p.vy += 0.045; p.vx *= 0.985; p.vy *= 0.985; p.life -= 0.012;
-            ctx.save();
-            ctx.globalAlpha = Math.max(0, p.life);
+            p.x += p.vx; p.y += p.vy;
+            p.vy += 0.045;
+            p.vx *= 0.985; p.vy *= 0.985;
+            p.life -= 0.014;
+            if (p.life <= 0) continue;
+            ctx.globalAlpha = p.life;
             ctx.fillStyle = 'hsl(' + p.hue + ',100%,65%)';
-            ctx.shadowBlur = 10; ctx.shadowColor = 'hsl(' + p.hue + ',100%,70%)';
-            ctx.beginPath(); ctx.arc(p.x, p.y, 1.1 + Math.random() * 0.8, 0, Math.PI * 2); ctx.fill();
-            ctx.restore();
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, 1.1, 0, Math.PI * 2);
+            ctx.fill();
           }
+          ctx.globalAlpha = 1;
+          ctx.shadowBlur = 0;
           rocket.particles = rocket.particles.filter(p => p.life > 0);
-          if (rocket.particles.length === 0) fw.splice(r, 1);
+          if (rocket.particles.length === 0) rockets.splice(r, 1);
         }
       }
-      requestAnimationFrame(tickFireworks);
+      ctx.shadowBlur = 0;
+      if (rockets.length > 0) {
+        fwRAF = requestAnimationFrame(tickFireworks);
+      }
     }
 
-    // ───── Reveal con IntersectionObserver ─────
+    function startFireworks() {
+      if (reduced || fwInterval) return;
+      fwInterval = setInterval(() => {
+        if (!pageVisible) return;
+        if (Math.random() < 0.7 && rockets.length < 4) {
+          rockets.push(new Rocket(window.innerWidth, window.innerHeight));
+        }
+        if (!fwRAF && rockets.length > 0) {
+          fwRAF = requestAnimationFrame(tickFireworks);
+        }
+      }, 500);
+    }
+
+    document.addEventListener('visibilitychange', () => {
+      pageVisible = !document.hidden;
+      if (pageVisible && rockets.length > 0 && !fwRAF) {
+        fwRAF = requestAnimationFrame(tickFireworks);
+      }
+    });
+
+    // ───── Reveal ─────
     const io = new IntersectionObserver((entries) => {
       entries.forEach(e => {
-        if (e.isIntersecting) { e.target.classList.add('in-view'); io.unobserve(e.target); }
+        if (e.isIntersecting) {
+          e.target.classList.add('in-view');
+          io.unobserve(e.target);
+        }
       });
-    }, { threshold: 0.12 });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
     document.querySelectorAll('.reveal-up').forEach(el => io.observe(el));
+  })();
   </script>
 </body>
 </html>
